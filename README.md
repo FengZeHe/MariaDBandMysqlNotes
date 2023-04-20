@@ -96,4 +96,4 @@ update book SET status = 1 where book_id =102;
   SET SQL_SAFE_UPDATES = 0;
   ```
 
-  
+
