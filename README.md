@@ -104,6 +104,16 @@ update book SET status = 1 where book_id =102;
 4. contacts 表要有五个列：name、phone_work、phone_mobile、email、relation_id。
 5. 而relation_types表只有两列: relation_id和relationship。建好着两个表后使用DESCRIBE语句看看它们的样子。
 
+```
+create table contacts (name CHAR(12),phone_work CHAR(12),phone_mobile CHAR(12),email CHAR(12),relation_id INT);
+create table relation_types (relation_id INT,relationship CHAR(12));
+
+describe test.contacts;
+describe test.relation_types; 
+
+
+```
+
 (2)
 1. 输入数据到刚才建的两个表中。首先是relation_types表，输入三行数据。第一列填成一位数的序列形式，第二列填文本：Family、Friend、Colleague.
 2. 接着填contacts表，至少填5组虚构的名字、电话和邮件地址，而在最后的relation_id列，填入能与relation_types的relation_id对应的一个数，并确认那三个relation_id列都能被用到。
