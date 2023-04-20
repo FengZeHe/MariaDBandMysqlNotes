@@ -22,7 +22,7 @@
 
 #### 创建用户
 
-```mysql
+``` mysql
 "GRANT USAGE ON *.*
 TO 'russell'@'localhost'
 IDENTIFIED BY 'Rover#My_1st_Dog&Not_Yours!';"
@@ -95,5 +95,13 @@ update book SET status = 1 where book_id =102;
   ```
   SET SQL_SAFE_UPDATES = 0;
   ```
+
+#### 习题
+(1) 用mysql登录MySQL或MariaDB，并将默认数据库切换到test。
+建两个表，分别名为contacts和relation_types。这两个表的数字列都用INT 类型，字符列用 CHAR 类型。
+为CHAR指定一个你想要的最大长度，否则MySQL 会使用 CHAR 的极限长度，但那并不实用。
+注意该长度必须足够容纳你接下来要输入的数据。如果你需要输入的内容既有数字又有字符（如电话号码中的连字符），那么使用CHAR。
+contacts 表要有五个列：name、phone_work、phone_mobile、email、relation_id。而relation_types表只有两列: relation_id和relationship。建好着两个表后使用DESCRIBE语句看看它们的样子。
+
 
 
