@@ -98,10 +98,21 @@ update book SET status = 1 where book_id =102;
 
 #### 习题
 (1) 用mysql登录MySQL或MariaDB，并将默认数据库切换到test。
-建两个表，分别名为contacts和relation_types。这两个表的数字列都用INT 类型，字符列用 CHAR 类型。
-为CHAR指定一个你想要的最大长度，否则MySQL 会使用 CHAR 的极限长度，但那并不实用。
-注意该长度必须足够容纳你接下来要输入的数据。如果你需要输入的内容既有数字又有字符（如电话号码中的连字符），那么使用CHAR。
-contacts 表要有五个列：name、phone_work、phone_mobile、email、relation_id。而relation_types表只有两列: relation_id和relationship。建好着两个表后使用DESCRIBE语句看看它们的样子。
+1. 建两个表，分别名为contacts和relation_types。这两个表的数字列都用INT 类型，字符列用 CHAR 类型。
+2. 为CHAR指定一个你想要的最大长度，否则MySQL 会使用 CHAR 的极限长度，但那并不实用。注意该长度必须足够容纳你接下来要输入的数据
+3. 如果你需要输入的内容既有数字又有字符（如电话号码中的连字符），那么使用CHAR。
+4. contacts 表要有五个列：name、phone_work、phone_mobile、email、relation_id。
+5. 而relation_types表只有两列: relation_id和relationship。建好着两个表后使用DESCRIBE语句看看它们的样子。
+
+(2)
+1. 输入数据到刚才建的两个表中。首先是relation_types表，输入三行数据。第一列填成一位数的序列形式，第二列填文本：Family、Friend、Colleague.
+2. 接着填contacts表，至少填5组虚构的名字、电话和邮件地址，而在最后的relation_id列，填入能与relation_types的relation_id对应的一个数，并确认那三个relation_id列都能被用到。
+3. 执行两条select语句，以获得那两个表的所有列的所有数据，然后再写一条SELECT，要求只获取contacts中的姓名和邮件地址。
+4. 用UPDATE来修改刚才输入的数据。首先修改某个人的命令和电话，接着修改某人的邮件地址以及（他）与你的关系(即relation_id)。要求两次修改部分只能用一条update语句。
+5. 执行一条select语句，连接习题1的两个表。用JOIN字句来实现。因为两个表都有relation_id列，所以就在这两列上连接——写在WHERE字句中。
+6. 只显示你的Friend的name和phone_mobile列——需要在WHERE中使用AND。先试试按relation_id来筛选，再试试relationship筛选。
+
+
 
 
 
