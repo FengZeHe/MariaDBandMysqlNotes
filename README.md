@@ -144,15 +144,48 @@ select name,phone_mobile,relationship from test.contacts join relation_types whe
 1. 很多新手喜欢在一个数据库中建立一个拥有很多列的大型表，但其实这样处理数据是很低效的。现实中仅建立一个表不合理；所以晴建立多个小表而非一个大表。
 2. 建表时我们需要规划好方案，需要建什么域（或列），是有很多选项的。最起码要制定类型、包含字符还是整数？包含日期和时间、还是二进制数据？如何建立索引？
 
+3. CHAR和VARCHAR的区别？CHAR分配到的空间总是最大长度，不会因为内容少而减少。使用哪种类型是一种权衡。用CHAR的话，存储引擎就能确切知道列表会返回多少东西，这会令表运行得更快，索引也更容易维护。而VARCHAR对硬盘空间需求更少，利用效率更高，这也是一种提高性能的手段。如果你能确定知道某列内容的长度，那就用CHAR,否则用VARCHAR。
+
+#### 概念
+
+#### blob
+
+二进制大对象的意思，可以将一张图像文件、如jpge房间blob类。但这种做法通常是不好的，因为它会使得表变大从导致备份困难。更好的做法是将图像放在文件系统中，然后将其文件路径或url存放进数据库，以指示如何找到该文件。
 
 
 
+### 习题
+
+(1) 使用DROP TABLE语句将之前建的bird_orders表删掉。找回其建表语句。复制或键入文本编辑器然后进行修改:将 `brief_description `改成` TEXT `类型。注意不要留有多余的逗号。完成后，将改过的语句复制到 mysql 监视器上，并按 Enter 键来执行它。 如果报错，那就看看报错信息(可能不太明确)，再看看编辑器上的语句。检查一下改动了什么，有没有改错。确认关键字和值的位置正确，而且没有错别字。改完后再试着执行，直至成功为止。
+(2) 之前提过，我们还可以为每种鸟存储更多相关方面的信息。但不要将这些数据放进 birds表，相反，再创建一个表，即参考表。用CREATE TABLE来创建，命名为`birds_wing_shapes`。建三个列。
+
+ 	1. 第一列名为 wing_id，类型为CHAR，最大长度是 2。设该列为 UNIQUE 键，但不带有 AUTO_INCREMENT。我们将手工输入两位代码来识别每行的数据—— 因为表中可能只有六行数据，所以手工输入是可以接受的。
+ 	2. 第二列叫 wing_shape，类型为CHAR，最大长度是 25，用于描述鸟翼类型(例如锥形)。
+ 	3. 第三列是 wing_example， BLOB 类型，用于存储该种鸟翼形状的图片。
+
+(3)建完birds_wing_shapes表后，对它执行SHOW CREATE TABLE两次:一次以分号结尾， 一次以 \G 结尾。看看哪种样式的结果更具表现力。将返回的CREATE TABLE语句复制粘贴进文本编辑器。然后用`DROP TABLE`删掉`birds_wing_shapes`。
+在编辑器中改改复制来的语句。首先是存储引擎，如果 ENGINE 的值不是 MyISAM，则改 成 MyISAM。接着，将字符集和校对方式分别改成 utf8 和 utf8_general_ci。 然后将改过的语句粘贴到 mysql 监视器上，并按 Enter 键来执行它。如果报错，那就看 看那迷惑人的报错信息，再看看你编辑器上的语句。检查一下改动了什么，有没有改 错。确认关键字和值的位置正确，而且没有错别字。改完后再试着执行，直至成功。一旦成功，就用 DESCRIBE 来查看该表长什么样。
+
+(4) 再建两个类似 birds_wing_shapes 的表。一个用于存储关于鸟的身形的信息，另一个用 于存储关于鸟嘴形状的信息。它们会有助于观鸟爱好者找鸟。给它们分别起名为 birds_ body_shapes、birds_bill_shapes。
+birds_body_shapes 表的第一列是 body_id，其类型为 CHAR(3)，并且是 UNIQUE 键。第二 列是 body_shape，类型为 CHAR(25)。第三列是 body_example，设为 BLOB 类型，以便存 放鸟的形状图像。
+对 birds_bill_shapes 表，也建三个类似的列:类型为 CHAR(2)、作为 UNIQUE 键的 bill_id;CHAR(25) 类型的 bill_shape;存放鸟形图像的、BLOB 类型的 bill_shape。这 两个表的 ENGINE 都填 MyIASM，而 DEFAULT CHARSET 填 utf8，COLLATE 则填 utf8_ general_ci。都建完后，用 SHOW CREATE TABLE 检查一下你的工作
+
+```
+create table bird_orders (
+	odder_id int auto_increment primary key,
+    scientific_name varchar(255) unique,
+    brief_description text,
+    order_image blob
+) DEFAULT  CHARSET=utf8 collate=utf8_general_ci;
+
+create table birds_wing_shapers (
+	wing_id char(2) unique,
+	wing_shape char(25),
+    wing_example blob
+) 
 
 
-
-
-
-
+```
 
 
 
