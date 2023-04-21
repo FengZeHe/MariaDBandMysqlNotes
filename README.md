@@ -104,23 +104,55 @@ update book SET status = 1 where book_id =102;
 4. contacts 表要有五个列：name、phone_work、phone_mobile、email、relation_id。
 5. 而relation_types表只有两列: relation_id和relationship。建好着两个表后使用DESCRIBE语句看看它们的样子。
 
-```
-create table contacts (name CHAR(12),phone_work CHAR(12),phone_mobile CHAR(12),email CHAR(12),relation_id INT);
-create table relation_types (relation_id INT,relationship CHAR(12));
-
-describe test.contacts;
-describe test.relation_types; 
-
-
-```
-
 (2)
+
 1. 输入数据到刚才建的两个表中。首先是relation_types表，输入三行数据。第一列填成一位数的序列形式，第二列填文本：Family、Friend、Colleague.
 2. 接着填contacts表，至少填5组虚构的名字、电话和邮件地址，而在最后的relation_id列，填入能与relation_types的relation_id对应的一个数，并确认那三个relation_id列都能被用到。
 3. 执行两条select语句，以获得那两个表的所有列的所有数据，然后再写一条SELECT，要求只获取contacts中的姓名和邮件地址。
 4. 用UPDATE来修改刚才输入的数据。首先修改某个人的命令和电话，接着修改某人的邮件地址以及（他）与你的关系(即relation_id)。要求两次修改部分只能用一条update语句。
 5. 执行一条select语句，连接习题1的两个表。用JOIN字句来实现。因为两个表都有relation_id列，所以就在这两列上连接——写在WHERE字句中。
 6. 只显示你的Friend的name和phone_mobile列——需要在WHERE中使用AND。先试试按relation_id来筛选，再试试relationship筛选。
+
+```
+create table contacts (name CHAR(12),phone_work CHAR(12),phone_mobile CHAR(12),email CHAR(24),relation_id INT);
+create table relation_types (relation_id INT,relationship CHAR(12));
+
+describe test.contacts;
+describe test.relation_types; 
+
+insert into test.contacts VALUES('David','13333333','12222222','David@gmail.com',2);
+insert into test.contacts VALUES('Mike','15555555','15666666','Mike@gmail.com',3);
+insert into test.contacts VALUES('Jerker','1777777','19888888','Jerker@gmail.com',3);
+
+select * from contacts;
+select * from relation_types;
+
+select name,email from contacts;
+update test.contacts set email='Jerker@126.com' where name = 'Jerker';
+
+update test.contacts set email = 'update2@126.com' , relation_id = 2 where name = 'David';
+
+select name,phone_mobile,relationship from test.contacts join relation_types where contacts.relation_id = relation_types.relation_id;
+```
+
+
+
+## 数据库结构
+
+#### 避坑
+
+1. 很多新手喜欢在一个数据库中建立一个拥有很多列的大型表，但其实这样处理数据是很低效的。现实中仅建立一个表不合理；所以晴建立多个小表而非一个大表。
+2. 建表时我们需要规划好方案，需要建什么域（或列），是有很多选项的。最起码要制定类型、包含字符还是整数？包含日期和时间、还是二进制数据？如何建立索引？
+
+
+
+
+
+
+
+
+
+
 
 
 
