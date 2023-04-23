@@ -164,7 +164,7 @@ select name,phone_mobile,relationship from test.contacts join relation_types whe
  	3. 第三列是 wing_example， BLOB 类型，用于存储该种鸟翼形状的图片。
 
 (3)建完birds_wing_shapes表后，对它执行SHOW CREATE TABLE两次:一次以分号结尾， 一次以 \G 结尾。看看哪种样式的结果更具表现力。将返回的CREATE TABLE语句复制粘贴进文本编辑器。然后用`DROP TABLE`删掉`birds_wing_shapes`。
-在编辑器中改改复制来的语句。首先是存储引擎，如果 ENGINE 的值不是 MyISAM，则改 成 MyISAM。接着，将字符集和校对方式分别改成 utf8 和 utf8_general_ci。 然后将改过的语句粘贴到 mysql 监视器上，并按 Enter 键来执行它。如果报错，那就看 看那迷惑人的报错信息，再看看你编辑器上的语句。检查一下改动了什么，有没有改 错。确认关键字和值的位置正确，而且没有错别字。改完后再试着执行，直至成功。一旦成功，就用 DESCRIBE 来查看该表长什么样。
+在编辑器中改改复制来的语句。首先是存储引擎，如果 ENGINE 的值不是 MyISAM，则改成 MyISAM。接着，将字符集和校对方式分别改成 utf8 和 utf8_general_ci。 然后将改过的语句粘贴到 mysql 监视器上，并按 Enter 键来执行它。如果报错，那就看看那迷惑人的报错信息，再看看你编辑器上的语句。检查一下改动了什么，有没有改 错。确认关键字和值的位置正确，而且没有错别字。改完后再试着执行，直至成功。一旦成功，就用 DESCRIBE 来查看该表长什么样。
 
 (4) 再建两个类似 birds_wing_shapes 的表。一个用于存储关于鸟的身形的信息，另一个用 于存储关于鸟嘴形状的信息。它们会有助于观鸟爱好者找鸟。给它们分别起名为 birds_ body_shapes、birds_bill_shapes。
 birds_body_shapes 表的第一列是 body_id，其类型为 CHAR(3)，并且是 UNIQUE 键。第二 列是 body_shape，类型为 CHAR(25)。第三列是 body_example，设为 BLOB 类型，以便存 放鸟的形状图像。
@@ -188,6 +188,91 @@ create table birds_wing_shapers (
 ```
 
 
+
+### 更改表
+
+#### 改表需谨慎
+
+1. 改表之前要做好数据备份。无论改动有多小都应该这么做。
+   1. 如果改了列的大小，有可能会丢失部分数据。
+   2. 如果将列的数据类型改成与之前的不兼容(字符串改为整形)，则可能丢失全部数据。
+   3. 可以使用 `musqldump`工具来备份你要改的表，或备份整个数据库。
+
+#### 必修的该表技能
+
+1. 修改列的数据类型，或修改列名使其含义更明确，或与其他表的列能更好的关联。可以使用`ALTER TABLE`实现
+
+2. `ALTER TABLE table_name changes;` table_name填要改的表明，changes则填具体的更改指令。
+
+   ```
+   ALTER TABLE test.birds ADD COLUMN order_id INT;
+   ```
+
+3. 如果要复制表，可以用指令`LIKE`子句，并且将新表建在test数据库中以原表区分开来。
+
+   ```
+   CREATE TABLE test.birds_new LIKE test.birds;
+   ```
+
+4. 如果想在建表的同时复制表结构和数据
+
+   ```
+   create table birds_new SELECT * from birds;
+   ```
+
+   1. 但这种方式没有将birds_id设置为主键，如果要一模一样，则使用 `CREATE TABLE LIKE...`这种方式创建
+
+5. 重命名一个表
+
+   ```
+   RENAME TABLE table1_altered TO table1;
+   ```
+
+#### 表重新排序
+
+1. `ALTER TABLE country_codes ORDER BY country_code;`但重排一个表是没必要的，在select时加上order by就可以
+
+
+
+## 数据处理基础
+
+#### 插入数据
+
+语法 
+
+```
+INSERT INTO table [(column,...)] VALUES (value ,...),(...),...;
+```
+
+#### 模糊查询
+- Mysql根据 LIKE 的条件，筛选结尾为xx的( % 通配符)的内容
+- `REGEXP` 是Mysql的默认匹配方法，将REGEXP所带的文本与列中值的开头开始匹配。 `REGEXP`
+-  `COUNT` 统计结果
+
+#### 更新数据
+- update数据的时候使用 `IN` 根据多个id来设置值
+
+#### 处理重复
+- 如果不小心重复录入数据，使用`INSERT`可以加上 `IGNORE`标识，以指示数据库忽略重复的行而不插入它们。
+
+### 表连接和予查询
+#### 合并结果集
+- 如果只是想查询两张表，只需要在select之间写上`UNION`即可。
+
+#### 表连接
+- 可以使用列来`join`子句连接两个表，并将这个链接放到`SELECT、UPDATE或DELETE`中，以做数据的查询、更新或删除操作。
+
+
+### 内置函数
+#### 字符串函数
+- 格式化字符串、拼接字符串、设置大小写和引用、修剪和补充字符串(LTRIM、RTRIM、TRIM)
+
+#### 日期和时间函数
+- DATE 只保存日期，格式为 yyyy-mm-dd
+- TIME
+- DATETIME
+- TIMESTAMP
+- YEAR
 
 
 
